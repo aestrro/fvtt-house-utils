@@ -4,9 +4,6 @@
   "title": "FVTT House Utilities",
   "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
   "version": "0.0.1",
-  "styles": [
-    "module.css"
-  ],
   "esmodules": [],
   "languages": [],
   "packs": [],
