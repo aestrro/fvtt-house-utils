@@ -1,0 +1,20 @@
+{
+  "name": "fvtt-house-utils",
+  "title": "FoundryVTT House Utilities",
+  "description": "Adds custom house rules that are commonly used in my campaigns",
+  "version": "0.0.1",
+  "author": "aestrro",
+  "module": {
+    "start": "scripts/main.js"
+  },
+  "systems": [
+    "dnd5e"
+  ],
+  "dependencies": [],
+  "packs": [],
+  "languages": [
+    "en"
+  ],
+  "url": "https://github.com/aestrro/fvtt-house-utils",
+  "manifest": "https://github.com/aestrro/fvtt-house-utils/raw/main/module.json"
+}
