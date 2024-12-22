@@ -1,23 +1,21 @@
 {
   "id": "fvtt-house-utils",
-  "name": "fvtt-house-utils",
   "title": "FVTT House Utilities",
   "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
   "version": "0.0.1",
-  "esmodules": [],
-  "languages": [],
-  "packs": [],
-  "dependencies": [],
   "minimumCoreVersion": "11",
   "compatibleCoreVersion": "12",
+  "system": [
+    "dnd5e"
+  ],
   "compatibility": {
     "minimum": "11",
+    "maximum": "12",
     "verified": "12"
   },
-  "scripts": [
+  "esmodules": [
     "scripts/main.js"
   ],
-  "socket": true,
   "url": "https://github.com/aestrro/fvtt-house-utils",
   "manifest": "https://raw.githubusercontent.com/aestrro/fvtt-house-utils/main/module.json"
 }
