@@ -1,20 +1,30 @@
 {
-  "name": "fvtt-house-utils",
-  "title": "FoundryVTT House Utilities",
-  "description": "Adds custom house rules that are commonly used in my campaigns",
-  "version": "0.0.1",
-  "author": "aestrro",
-  "module": {
-    "start": "scripts/main.js"
-  },
-  "systems": [
-    "dnd5e"
+  "id": "fvtt-house-utils",
+  "title": "FVTT House Utilities",
+  "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
+  "version": "1.0.0",
+  "authors": [
+    {
+      "name": "Aestrro",
+      "url": "https://github.com/aestrro"
+    }
   ],
-  "dependencies": [],
-  "packs": [],
-  "languages": [
-    "en"
+  "minimumCoreVersion": "11",
+  "compatibleCoreVersion": "11.307",
+  "esmodules": [
+    "scripts/main.js"
   ],
+  "packs": [
+    {
+      "name": "house-utils-pack",
+      "label": "House Utilities Compendium",
+      "path": "packs/house-utils.db",
+      "type": "Item"
+    }
+  ],
+  "socket": true,
   "url": "https://github.com/aestrro/fvtt-house-utils",
-  "manifest": "https://github.com/aestrro/fvtt-house-utils/raw/main/module.json"
+  "manifest": "https://github.com/aestrro/fvtt-house-utils/releases/latest/download/module.json",
+  "download": "https://github.com/aestrro/fvtt-house-utils/releases/latest/download/fvtt-house-utils.zip",
+  "protected": true
 }
