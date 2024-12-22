@@ -3,7 +3,7 @@
   "name": "fvtt-house-utils",
   "title": "House Rule Utilities",
   "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha",
   "system": [
     "dnd5e"
   ],
@@ -19,5 +19,6 @@
     "verified": 12
   },
   "url": "https://github.com/aestrro/fvtt-house-utils/",
-  "manifest": "https://raw.githubusercontent.com/aestrro/fvtt-house-utils/main/module.json"
+  "download": "https://github.com/aestrro/fvtt-house-utils/releases/download/VERSION/fvtt-house-utils.zip",
+  "manifest": "https://github.com/aestrro/fvtt-house-utils/releases/download/latest/module.json"
 }
