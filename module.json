@@ -10,9 +10,13 @@
       "url": "https://github.com/aestrro"
     }
   ],
-  "minimumCoreVersion": "9",
+  "minimumCoreVersion": "11",
   "compatibleCoreVersion": "12",
-  "esmodules": [
+  "compatibility": {
+    "minimum": "11",
+    "verified": "12"
+  },
+  "scripts": [
     "scripts/main.js"
   ],
   "socket": true,
