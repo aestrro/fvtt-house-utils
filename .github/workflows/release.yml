@@ -4,45 +4,45 @@ on:
   push:
     tags:
       - 'v*'
+
 permissions:
   contents: write
-  packages: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the code
-    - name: Checkout code
-      uses: actions/checkout@v3
+      # Step 1: Check out the code
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 16
+      # Step 2: Set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
 
-    # Step 3: Update module.json version based on package.json
-    - name: Sync version from package.json to module.json
-      run: |
-        echo "Syncing version..."
-        VERSION=$(jq -r '.version' package.json)
-        jq --arg version "$VERSION" '.version = $version' module.json > tmp.json && mv tmp.json module.json
-        echo "module.json updated to version $VERSION."
+      # Step 3: Update module.json version based on package.json
+      - name: Sync version from package.json to module.json
+        run: |
+          echo "Syncing version..."
+          VERSION=$(jq -r '.version' package.json)
+          jq --arg version "$VERSION" '.version = $version' module.json > tmp.json && mv tmp.json module.json
+          echo "module.json updated to version $VERSION."
 
-    # Step 4: Create a zip file
-    - name: Create zip file
-      run: |
-        zip -r fvtt-house-utils.zip module.json scripts || true
+      # Step 4: Create a zip file
+      - name: Create zip file
+        run: |
+          zip -r fvtt-house-utils.zip module.json scripts || true
 
-    # Step 5: Upload assets to the release
-    - name: Create GitHub Release
-      uses: ncipollo/release-action@v1
-      with:
-        artifacts: |
-          fvtt-house-utils.zip
-          module.json
-        token: ${{ secrets.GITHUB_TOKEN }}
-        tag: ${{ github.ref_name }}
-        name: Release ${{ github.ref_name }}
+      # Step 5: Upload assets to the release
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: |
+            fvtt-house-utils.zip
+            module.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ github.ref_name }}
+          name: Release ${{ github.ref_name }}
