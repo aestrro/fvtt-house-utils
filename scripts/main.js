@@ -11,7 +11,7 @@ Hooks.once('init', () => {
 
 // Function to register custom settings
 function registerSettings() {
-  // Example: A setting for Shield Spell bonus
+  // Setting for Shield Spell bonus
   game.settings.register('fvtt-house-utils', 'shieldSpellBonus', {
     name: 'Shield Spell Bonus',
     hint: 'Set the AC bonus granted by the Shield Spell.',
@@ -27,12 +27,15 @@ function registerHooks() {
   // Monitor actor updates
   Hooks.on('preUpdateActor', async (actor, updateData) => {
     try {
+      // Calculate and update Shield Spell skill
       const shieldSpellSkill = calculateShieldSpell(actor);
-      if (shieldSpellSkill) {
-        await updateShieldSpellSkill(actor, shieldSpellSkill);
-      }
+      if (shieldSpellSkill) await updateCustomSkill(actor, shieldSpellSkill);
+
+      // Calculate and update Defensive Skill
+      const defensiveSkill = calculateDefensiveSkill(actor);
+      if (defensiveSkill) await updateCustomSkill(actor, defensiveSkill);
     } catch (error) {
-      console.error('fvtt-house-utils | Error updating Shield Spell skill:', error);
+      console.error('fvtt-house-utils | Error updating custom skills:', error);
     }
   });
 
@@ -56,12 +59,29 @@ function calculateShieldSpell(actor) {
     key: 'shield-spell',
     label: 'Shield Spell',
     value: skillValue,
-    ability: 'dex' // Placeholder; not directly used
+    ability: 'sh1' // Placeholder; not directly used
   };
 }
 
-// Function: Update or add the "Shield Spell" skill to the actor
-async function updateShieldSpellSkill(actor, skillData) {
+// Function: Calculate the "Defensive Skill" value
+function calculateDefensiveSkill(actor) {
+  const actorData = actor.data?.data;
+
+  if (!actorData?.attributes?.ac || !actorData?.abilities?.dex) return null; // Ensure data exists
+
+  const dexBonus = actorData.abilities.dex.mod || 0; // Dexterity modifier
+  const skillValue = dexBonus;
+
+  return {
+    key: 'defensive-skill',
+    label: 'Defense',
+    value: skillValue,
+    ability: 'def' // Placeholder; not directly used
+  };
+}
+
+// Function: Update or add a custom skill to the actor
+async function updateCustomSkill(actor, skillData) {
   const existingSkill = actor.data.data.skills?.[skillData.key];
 
   if (!existingSkill) {
