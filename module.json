@@ -4,9 +4,11 @@
   "title": "House Rule Utilities",
   "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
   "version": "0.0.1-alpha",
-  "system": [
-    "dnd5e"
-  ],
+  "relationships": {
+    "systems": [
+      "dnd5e"
+    ]
+  },
   "authors": [
     {
       "name": "aestrro"
