@@ -12,6 +12,10 @@
       "name": "aestrro"
     }
   ],
+  "scripts": [
+    "scripts/main.js"
+  ],
+  "styles": [],
   "minimumCoreVersion": "10.282",
   "compatibleCoreVersion": "12",
   "compatibility": {
