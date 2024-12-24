@@ -128,7 +128,7 @@ async function updateCustomSkill(actor, skillData) {
 }
 
 
-class CustomCharacterSheet extends dnd5e.applications.actor.ActorSheet5eCharacter {
+class CustomCharacterSheet extends dnd5e.applications.actor.ActorSheet5eCharacter2 {
   /** @override */
   async getData(options) {
     const data = await super.getData(options);
