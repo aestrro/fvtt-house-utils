@@ -1,91 +1,84 @@
 // Register your module with Foundry
 Hooks.once('init', () => {
   console.log('fvtt-house-utils | Initializing FVTT House Utilities Module');
-
-  // Register custom settings
   registerSettings();
-
-  // Register custom hooks
   registerHooks();
 });
 
 // Function to register custom settings
 function registerSettings() {
-  // Setting for Shield Spell bonus
-  game.settings.register('fvtt-house-utils', 'shieldSpellBonus', {
-    name: 'Shield Spell Bonus',
-    hint: 'Set the AC bonus granted by the Shield Spell.',
+  game.settings.register('fvtt-house-utils', 'enableCustomSkills', {
+    name: 'Enable Custom Skills',
+    hint: 'Toggle this to enable the Defense and Shield Spell skills.',
     scope: 'world',
     config: true,
-    type: Number,
-    default: 5 // Default bonus value
+    type: Boolean,
+    default: true
   });
 }
 
 // Function to register custom hooks
 function registerHooks() {
-  // Monitor actor updates
   Hooks.on('preUpdateActor', async (actor, updateData) => {
-    try {
-      // Calculate and update Shield Spell skill
-      const shieldSpellSkill = calculateShieldSpell(actor);
-      if (shieldSpellSkill) await updateCustomSkill(actor, shieldSpellSkill);
+    if (!game.settings.get('fvtt-house-utils', 'enableCustomSkills')) return;
 
-      // Calculate and update Defensive Skill
-      const defensiveSkill = calculateDefensiveSkill(actor);
-      if (defensiveSkill) await updateCustomSkill(actor, defensiveSkill);
-    } catch (error) {
-      console.error('fvtt-house-utils | Error updating custom skills:', error);
+    const defenseSkill = calculateDefensiveSkill(actor);
+    if (defenseSkill) {
+      console.log('fvtt-house-utils | Calculated Defense Skill:', defenseSkill);
+      await updateCustomSkill(actor, defenseSkill);
     }
-  });
 
-  // Log module readiness
-  Hooks.once('ready', () => {
-    console.log('fvtt-house-utils | FVTT House Utilities is ready!');
+    const shieldSpellSkill = calculateShieldSpell(actor);
+    if (shieldSpellSkill) {
+      console.log('fvtt-house-utils | Calculated Shield Spell Skill:', shieldSpellSkill);
+      await updateCustomSkill(actor, shieldSpellSkill);
+    }
   });
 }
 
-// Function: Calculate the "Shield Spell" skill value
+// Function to calculate the "Defense" skill
+function calculateDefensiveSkill(actor) {
+  const actorData = actor.data.data;
+
+  if (!actorData.attributes || !actorData.attributes.ac) return null;
+
+  const baseAC = actorData.attributes.ac.value || 10;
+  const dexMod = actorData.abilities?.dex?.mod || 0;
+  const skillValue = baseAC - 10 + dexMod;
+
+  return {
+    key: 'defense',
+    label: 'Defense',
+    value: skillValue,
+    ability: 'dex'
+  };
+}
+
+// Function to calculate the "Shield Spell" skill
 function calculateShieldSpell(actor) {
-  const actorData = actor.data?.data;
+  const actorData = actor.data.data;
 
-  if (!actorData?.attributes?.ac) return null; // Ensure AC data exists
+  if (!actorData.attributes || !actorData.attributes.ac) return null;
 
-  const shieldSpellBonus = game.settings.get('fvtt-house-utils', 'shieldSpellBonus');
-  const baseAC = actorData.attributes.ac.value || 10; // Actor's AC
+  const shieldSpellBonus = 5; // Default Shield spell AC bonus
+  const baseAC = actorData.attributes.ac.value || 10;
   const skillValue = baseAC - 10 + shieldSpellBonus;
 
   return {
     key: 'shield-spell',
     label: 'Shield Spell',
     value: skillValue,
-    ability: 'sh1' // Placeholder; not directly used
+    ability: 'dex'
   };
 }
 
-// Function: Calculate the "Defensive Skill" value
-function calculateDefensiveSkill(actor) {
-  const actorData = actor.data?.data;
-
-  if (!actorData?.attributes?.ac || !actorData?.abilities?.dex) return null; // Ensure data exists
-
-  const dexBonus = actorData.abilities.dex.mod || 0; // Dexterity modifier
-  const skillValue = dexBonus;
-
-  return {
-    key: 'defensive-skill',
-    label: 'Defense',
-    value: skillValue,
-    ability: 'def' // Placeholder; not directly used
-  };
-}
-
-// Function: Update or add a custom skill to the actor
+// Function to add or update custom skills on the actor
 async function updateCustomSkill(actor, skillData) {
   const existingSkill = actor.data.data.skills?.[skillData.key];
 
   if (!existingSkill) {
     // Add the skill if it doesn't exist
+    console.log(`fvtt-house-utils | Adding '${skillData.label}' to ${actor.name}`);
     await actor.update({
       [`data.skills.${skillData.key}`]: {
         ability: skillData.ability,
@@ -93,12 +86,11 @@ async function updateCustomSkill(actor, skillData) {
         label: skillData.label
       }
     });
-    console.log(`fvtt-house-utils | Added '${skillData.label}' to ${actor.name}`);
   } else if (existingSkill.value !== skillData.value) {
     // Update the skill if the value has changed
+    console.log(`fvtt-house-utils | Updating '${skillData.key}' for ${actor.name} to ${skillData.value}`);
     await actor.update({
       [`data.skills.${skillData.key}.value`]: skillData.value
     });
-    console.log(`fvtt-house-utils | Updated '${skillData.label}' for ${actor.name} to ${skillData.value}`);
   }
 }
