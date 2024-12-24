@@ -38,7 +38,7 @@ function registerHooks() {
 
 // Function to calculate the "Defense" skill
 function calculateDefensiveSkill(actor) {
-  const actorData = actor.data.data;
+  const actorData = actor.system
 
   if (!actorData.attributes || !actorData.attributes.ac) return null;
 
@@ -56,7 +56,7 @@ function calculateDefensiveSkill(actor) {
 
 // Function to calculate the "Shield Spell" skill
 function calculateShieldSpell(actor) {
-  const actorData = actor.data.data;
+  const actorData = actor.system;
 
   if (!actorData.attributes || !actorData.attributes.ac) return null;
 
@@ -74,7 +74,7 @@ function calculateShieldSpell(actor) {
 
 // Function to add or update custom skills on the actor
 async function updateCustomSkill(actor, skillData) {
-  const existingSkill = actor.data.data.skills?.[skillData.key];
+  const existingSkill = actor.system.skills?.[skillData.key];
 
   if (!existingSkill) {
     // Add the skill if it doesn't exist
