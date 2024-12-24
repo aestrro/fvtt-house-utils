@@ -3,6 +3,26 @@ Hooks.once('init', () => {
   console.log('fvtt-house-utils | Initializing FVTT House Utilities Module');
   registerSettings();
   registerHooks();
+
+  // Register custom character sheet
+  Actors.registerSheet('dnd5e', CustomCharacterSheet, { types: ['character'], label: 'Custom Character Sheet' });
+});
+
+Hooks.on('renderActorSheet', (sheet, html, data) => {
+  // Add custom HTML dynamically
+  const customHtml = `
+    <div class="custom-skills">
+      <h3>Custom Skills</h3>
+      <ul>
+        ${Object.values(data.customSkills || {}).map(skill => `
+          <li><strong>${skill.label}:</strong> ${skill.value}</li>
+        `).join('')}
+      </ul>
+    </div>
+  `;
+
+  // Append the custom HTML to a specific section
+  html.find('.attributes').append(customHtml);
 });
 
 // Function to register custom settings
@@ -92,7 +112,7 @@ async function updateCustomSkill(actor, skillData) {
     // Add the skill if it doesn't exist
     console.log(`fvtt-house-utils | Adding '${skillData.label}' to ${actor.name}`);
     await actor.update({
-      [`data.skills.${skillData.key}`]: {
+      [`system.skills.${skillData.key}`]: {
         ability: skillData.ability,
         value: skillData.value,
         label: skillData.label
@@ -102,7 +122,34 @@ async function updateCustomSkill(actor, skillData) {
     // Update the skill if the value has changed
     console.log(`fvtt-house-utils | Updating '${skillData.key}' for ${actor.name} to ${skillData.value}`);
     await actor.update({
-      [`data.skills.${skillData.key}.value`]: skillData.value
+      [`system.skills.${skillData.key}.value`]: skillData.value
     });
+  }
+}
+
+
+class CustomCharacterSheet extends dnd5e.applications.actor.ActorSheet5eCharacter {
+  /** @override */
+  async getData(options) {
+    const data = await super.getData(options);
+
+    // Add custom skills to the skills list
+    data.skills = {
+      ...data.skills, // Keep existing skills
+      defense: {
+        value: data.actor.system.attributes.ac.value - 10 + data.actor.system.abilities.dex.mod,
+        ability: "dex",
+        label: "Defense",
+        proficient: 0 // Default proficiency
+      },
+      shieldSpell: {
+        value: data.actor.system.attributes.ac.value - 10 + 5,
+        ability: "dex",
+        label: "Shield Spell",
+        proficient: 0 // Default proficiency
+      }
+    };
+
+    return data;
   }
 }
