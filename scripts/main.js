@@ -17,28 +17,40 @@ function registerSettings() {
   });
 }
 
+// Flag to prevent endless loop of updates
+let isProcessingUpdate = false;
+
 // Function to register custom hooks
 function registerHooks() {
   Hooks.on('preUpdateActor', async (actor, updateData) => {
+    if (isProcessingUpdate) return; // Prevent recursion
     if (!game.settings.get('fvtt-house-utils', 'enableCustomSkills')) return;
 
-    const defenseSkill = calculateDefensiveSkill(actor);
-    if (defenseSkill) {
-      console.log('fvtt-house-utils | Calculated Defense Skill:', defenseSkill);
-      await updateCustomSkill(actor, defenseSkill);
-    }
+    isProcessingUpdate = true; // Set flag to indicate an update is being processed
 
-    const shieldSpellSkill = calculateShieldSpell(actor);
-    if (shieldSpellSkill) {
-      console.log('fvtt-house-utils | Calculated Shield Spell Skill:', shieldSpellSkill);
-      await updateCustomSkill(actor, shieldSpellSkill);
+    try {
+      const defenseSkill = calculateDefensiveSkill(actor);
+      if (defenseSkill) {
+        console.log('fvtt-house-utils | Calculated Defense Skill:', defenseSkill);
+        await updateCustomSkill(actor, defenseSkill);
+      }
+
+      const shieldSpellSkill = calculateShieldSpell(actor);
+      if (shieldSpellSkill) {
+        console.log('fvtt-house-utils | Calculated Shield Spell Skill:', shieldSpellSkill);
+        await updateCustomSkill(actor, shieldSpellSkill);
+      }
+    } catch (error) {
+      console.error('fvtt-house-utils | Error updating skills:', error);
+    } finally {
+      isProcessingUpdate = false; // Reset the flag after processing
     }
   });
 }
 
 // Function to calculate the "Defense" skill
 function calculateDefensiveSkill(actor) {
-  const actorData = actor.system
+  const actorData = actor.system;
 
   if (!actorData.attributes || !actorData.attributes.ac) return null;
 
