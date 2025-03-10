@@ -1,0 +1,15 @@
+<div class="custom-skills">
+  <h3>Custom Skills</h3>
+  <ul class="skills-list">
+    {{#each customSkills as |skill key|}}
+    <li class="skill" data-skill="{{skill.key}}">
+      <div class="skill-proficiency">
+        <i class="far {{#if skill.proficient}}fa-check-circle{{else}}fa-circle{{/if}}"></i>
+      </div>
+      <div class="skill-name">{{skill.label}}</div>
+      <div class="skill-ability">{{skill.ability}}</div>
+      <div class="skill-mod">{{numberFormat skill.value decimals=0 sign=true}}</div>
+    </li>
+    {{/each}}
+  </ul>
+</div>

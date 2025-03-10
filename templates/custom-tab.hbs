@@ -1,0 +1,27 @@
+<div class="tab custom" data-group="primary" data-tab="custom">
+  <div class="house-rules-content">
+    <h2>Custom Skills</h2>
+    <div class="skills-list custom-skills-list">
+      {{#each customSkills as |skill key|}}
+      <div class="skill flexrow" data-skill="{{skill.key}}">
+        <div class="skill-proficiency">
+          <i class="far {{#if skill.proficient}}fa-check-circle{{else}}fa-circle{{/if}}"></i>
+        </div>
+        <div class="skill-name">{{skill.label}}</div>
+        <div class="skill-ability">{{skill.ability}}</div>
+        <div class="skill-mod">{{numberFormat skill.value decimals=0 sign=true}}</div>
+      </div>
+      {{/each}}
+    </div>
+
+    <h2>House Rules Description</h2>
+    <div class="form-group">
+      <label>Defense Skill</label>
+      <p>This skill represents your character's defensive capabilities and is based on your AC and Dexterity.</p>
+    </div>
+    <div class="form-group">
+      <label>Shield Spell</label>
+      <p>This skill represents your AC when you cast the Shield spell as a reaction.</p>
+    </div>
+  </div>
+</div>
