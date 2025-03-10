@@ -2,8 +2,21 @@
   "name": "fvtt-house-utils",
   "version": "0.0.1-alpha.14",
   "description": "A collection of utilities to enhance your Foundry VTT campaigns, provided by Aestrro.",
-  "main": "index.js",
-  "repository": "git@github.com:aestrro/fvtt-house-utils.git",
+  "main": "scripts/main.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aestrro/fvtt-house-utils.git"
+  },
+  "keywords": [
+    "foundry-vtt",
+    "dnd5e",
+    "house-rules",
+    "skills"
+  ],
   "author": "aestrro <aestrro@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aestrro/fvtt-house-utils/issues"
+  },
+  "homepage": "https://github.com/aestrro/fvtt-house-utils#readme"
 }

@@ -23,7 +23,14 @@
   "scripts": [
     "scripts/main.js"
   ],
-  "styles": [],
+  "styles": [
+    "styles/fvtt-house-utils.css"
+  ],
+  "esmodules": [],
+  "templates": [
+    "templates/custom-skills-section.hbs",
+    "templates/custom-tab.hbs"
+  ],
   "minimumCoreVersion": "10.282",
   "compatibleCoreVersion": "12",
   "compatibility": {
