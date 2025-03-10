@@ -23,9 +23,7 @@
   "scripts": [
     "scripts/main.js"
   ],
-  "styles": [
-    "styles/fvtt-house-utils.css"
-  ],
+  "styles": [],
   "esmodules": [],
   "templates": [
     "templates/custom-skills-section.hbs",
